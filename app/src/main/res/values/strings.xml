@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Extended Screen Timeout</string>
+    <string name="accessibility_service_description">This service keeps your screen awake for 10 minutes after your last interaction, bypassing work profile limits.</string>
+</resources>
