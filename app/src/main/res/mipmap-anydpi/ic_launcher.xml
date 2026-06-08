@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Legacy transparent icon (completely identical to foreground layer) -->
+    <!-- Scaled back down to 1.05 to fit perfectly inside the safe zone (was 1.4) -->
+    <group android:scaleX="1.05" android:scaleY="1.05" android:pivotX="54" android:pivotY="54">
+
+        <!-- Soft drop shadow for the phone -->
+        <path
+            android:fillColor="#33000000"
+            android:pathData="M 38 21 h 32 c 3.3 0 6 2.7 6 6 v 64 c 0 3.3 -2.7 6 -6 6 h -32 c -3.3 0 -6 -2.7 -6 -6 v -64 c 0 -3.3 2.7 -6 6 -6 z"/>
+
+        <!-- Phone outer body (Dark Gray) -->
+        <path
+            android:fillColor="#3C4043"
+            android:pathData="M 38 18 h 32 c 3.3 0 6 2.7 6 6 v 64 c 0 3.3 -2.7 6 -6 6 h -32 c -3.3 0 -6 -2.7 -6 -6 v -64 c 0 -3.3 2.7 -6 6 -6 z"/>
+
+        <!-- Phone top speaker pill -->
+        <path
+            android:fillColor="#171717"
+            android:pathData="M 48 23 h 12 c 1 0 2 0.5 2 1.5 s -1 1.5 -2 1.5 h -12 c -1 0 -2 -0.5 -2 -1.5 s 1 -1.5 2 -1.5 z" />
+
+        <!-- Phone screen (Very Dark Gray / Almost Black) -->
+        <path
+            android:fillColor="#202124"
+            android:pathData="M 36 28 h 36 v 52 h -36 z" />
+
+        <!-- Soft ambient glow behind the lightbulb -->
+        <path
+            android:fillColor="#4DFBBC04"
+            android:pathData="M 54 52 m -16 0 a 16 16 0 1 0 32 0 a 16 16 0 1 0 -32 0" />
+
+        <!-- Scaled Lightbulb (Outline Material Symbol) -->
+        <group
+            android:scaleX="1.6"
+            android:scaleY="1.6"
+            android:translateX="34.8"
+            android:translateY="33.4">
+
+            <path
+                android:fillColor="#F9AB00"
+                android:pathData="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+        </group>
+    </group>
+</vector>
