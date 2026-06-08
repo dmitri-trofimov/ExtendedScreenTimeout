@@ -16,15 +16,25 @@ import android.view.accessibility.AccessibilityEvent
 
 class DynamicTimeoutService : AccessibilityService() {
 
-    private val TAG = "DynamicTimeoutService"
-    private val TIMEOUT_MS = 9 * 60 * 1000L // 10 minutes
+    companion object {
+        private const val TAG = "DynamicTimeoutService"
+    }
+
+    private var timeoutMs = 10 * 60 * 1000L // Default 10 minutes
+
+    private fun loadTimeoutPreference() {
+        val prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        val minutes = prefs.getInt("timeout_minutes", 10)
+        timeoutMs = minutes * 60 * 1000L
+        Log.d(TAG, "Timeout updated to $minutes minutes ($timeoutMs ms)")
+    }
     private val handler = Handler(Looper.getMainLooper())
     
     private var windowManager: WindowManager? = null
     private var keepAwakeView: View? = null
 
     private val removeKeepAwakeViewRunnable = Runnable {
-        Log.d(TAG, "10 minutes passed. Removing KeepAwake view.")
+        Log.d(TAG, "Timeout passed. Removing KeepAwake view.")
         removeKeepAwakeView()
     }
 
@@ -36,8 +46,12 @@ class DynamicTimeoutService : AccessibilityService() {
                     removeKeepAwakeView()
                 }
                 Intent.ACTION_USER_PRESENT -> {
-                    Log.d(TAG, "Device unlocked. Starting KeepAwake view and 10-minute timer.")
+                    Log.d(TAG, "Device unlocked. Starting KeepAwake view and timer.")
                     addKeepAwakeViewAndResetTimer()
+                }
+                "com.example.extendedscreentimeout.UPDATE_TIMEOUT" -> {
+                    loadTimeoutPreference()
+                    addKeepAwakeViewAndResetTimer() // Reset timer with new duration
                 }
             }
         }
@@ -47,19 +61,28 @@ class DynamicTimeoutService : AccessibilityService() {
         super.onServiceConnected()
         Log.d(TAG, "Service Connected")
         
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        loadTimeoutPreference()
+
+        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_OFF)
             addAction(Intent.ACTION_USER_PRESENT)
+            addAction("com.example.extendedscreentimeout.UPDATE_TIMEOUT")
         }
-        registerReceiver(screenReceiver, filter)
+        androidx.core.content.ContextCompat.registerReceiver(
+            this,
+            screenReceiver,
+            filter,
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
+        )
         
         addKeepAwakeViewAndResetTimer()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as android.app.KeyguardManager
+        val keyguardManager = getSystemService(KEYGUARD_SERVICE) as android.app.KeyguardManager
+
         if (!keyguardManager.isKeyguardLocked) {
             addKeepAwakeViewAndResetTimer()
         }
@@ -93,6 +116,7 @@ class DynamicTimeoutService : AccessibilityService() {
             )
             params.gravity = Gravity.TOP or Gravity.START
             
+            @android.annotation.SuppressLint("ClickableViewAccessibility")
             keepAwakeView?.setOnTouchListener { _, event ->
                 if (event.action == android.view.MotionEvent.ACTION_OUTSIDE) {
                     Log.d(TAG, "Raw touch detected! Resetting timer.")
@@ -110,8 +134,8 @@ class DynamicTimeoutService : AccessibilityService() {
             }
         }
 
-        Log.d(TAG, "Timer reset to 10 minutes from now due to interaction.")
-        handler.postDelayed(removeKeepAwakeViewRunnable, TIMEOUT_MS)
+        Log.d(TAG, "Timer reset to ${timeoutMs / 60000} minutes from now due to interaction.")
+        handler.postDelayed(removeKeepAwakeViewRunnable, timeoutMs)
     }
 
     private fun removeKeepAwakeView() {
