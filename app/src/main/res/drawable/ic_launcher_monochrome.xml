@@ -8,23 +8,24 @@
 
     <group android:scaleX="0.65" android:scaleY="0.65" android:pivotX="54" android:pivotY="54" android:translateY="-1">
 
-        <!-- Phone outline (properly hollow via stroke instead of complex fill) -->
+        <!-- Phone body with the screen completely cut out to allow for transparency -->
         <path
-            android:strokeColor="#000000"
-            android:strokeWidth="3"
-            android:fillColor="#00000000"
-            android:pathData="M 38 18 h 32 c 3.3 0 6 2.7 6 6 v 64 c 0 3.3 -2.7 6 -6 6 h -32 c -3.3 0 -6 -2.7 -6 -6 v -64 c 0 -3.3 2.7 -6 6 -6 z" />
+            android:fillColor="#000000"
+            android:fillType="evenOdd"
+            android:pathData="M 38 18 h 32 c 3.3 0 6 2.7 6 6 v 64 c 0 3.3 -2.7 6 -6 6 h -32 c -3.3 0 -6 -2.7 -6 -6 v -64 c 0 -3.3 2.7 -6 6 -6 z M 36 28 h 36 v 52 h -36 z" />
 
-        <!-- Scaled Lightbulb (Outline Material Symbol to appear transparent inside) -->
+        <!-- Screen (50% transparency) with Lightbulb completely cut out to be transparent -->
         <group
             android:scaleX="1.6"
             android:scaleY="1.6"
             android:translateX="34.8"
             android:translateY="33.4">
 
+            <!-- Using evenOdd fill to draw the 50% black screen and precisely subtract the light bulb -->
             <path
-                android:fillColor="#000000"
-                android:pathData="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+                android:fillColor="#80000000"
+                android:fillType="evenOdd"
+                android:pathData="M 0.75 -3.375 h 22.5 v 32.5 h -22.5 z M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
         </group>
     </group>
 </vector>
