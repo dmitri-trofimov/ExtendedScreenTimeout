@@ -6,7 +6,7 @@
     android:viewportHeight="108"
     android:tint="#000000">
 
-    <group android:scaleX="1.05" android:scaleY="1.05" android:pivotX="54" android:pivotY="54">
+    <group android:scaleX="0.65" android:scaleY="0.65" android:pivotX="54" android:pivotY="54" android:translateY="-1">
 
         <!-- Phone outline (properly hollow via stroke instead of complex fill) -->
         <path

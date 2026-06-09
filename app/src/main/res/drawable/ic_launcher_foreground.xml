@@ -20,7 +20,7 @@
 
         <!-- Phone screen -->
         <path
-            android:fillColor="#FFFFFF"
+            android:fillColor="#F9AB00"
             android:pathData="M 36 28 h 36 v 52 h -36 z" />
 
         <!-- Soft ambient glow behind the lightbulb -->
