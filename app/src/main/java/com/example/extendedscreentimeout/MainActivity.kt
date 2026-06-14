@@ -3,7 +3,9 @@ package com.example.extendedscreentimeout
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -11,6 +13,7 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.slider.Slider
@@ -72,7 +75,10 @@ class MainActivity : AppCompatActivity() {
             prefs.edit().putInt("timeout_minutes", minutes).apply()
             
             // Notify service to reload preferences
-            val updateIntent = Intent("com.example.extendedscreentimeout.UPDATE_TIMEOUT")
+            // setPackage makes this an explicit broadcast, scoped to this app's process only
+            val updateIntent = Intent("com.example.extendedscreentimeout.UPDATE_TIMEOUT").apply {
+                setPackage(packageName)
+            }
             sendBroadcast(updateIntent)
         }
     }
@@ -81,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         updateStatus()
         updateBatteryStatus()
+        requestNotificationPermissionIfNeeded()
     }
 
     private fun updateStatus() {
@@ -126,4 +133,17 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-}
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    0
+                )
+            }
+        }
+    }
+}
